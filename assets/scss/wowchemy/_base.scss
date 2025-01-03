@@ -1,0 +1,47 @@
+html {
+  font-family: $sta-font-body, sans-serif;
+  font-size: #{$sta-font-size-small}px;
+  color: rgba(0, 0, 0, 0.8);
+  line-height: 1.65;
+
+  // Offset anchor scrolling by height of desktop fixed header.
+  scroll-padding-top: 70px;
+
+  @include media-breakpoint-down(md) {
+    // Offset anchor scrolling by height of mobile fixed header.
+    scroll-padding-top: 50px;
+  }
+}
+
+@media screen and (min-width: 58em) {
+  html {
+    font-size: #{$sta-font-size}px;
+  }
+}
+
+body {
+  font-weight: 300;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: inherit;
+  color: inherit;
+  background-color: $sta-background;
+  padding-top: 0;
+  counter-reset: captions;
+
+  // Prevent horizontal scrollbar in case a site admin adds fixed width content without applying `max-width: 100%`.
+  overflow-x: hidden;
+
+  // Offset body content by fixed navbar height.
+  margin-top: 70px;
+
+  @include media-breakpoint-down(md) {
+    // Offset body content by fixed navbar height.
+    margin-top: 50px;
+  }
+}
+
+// Ensure bold elements are styled correctly
+b, strong {
+    font-weight: bold; // Ensures bold text is bold even with body weight set to 300
+  }

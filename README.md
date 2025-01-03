@@ -1,52 +1,104 @@
-# [Hugo Academic CV Theme](https://github.com/HugoBlox/theme-academic-cv)
+# My Migration to Hugo
 
-[![Screenshot](.github/preview.webp)](https://hugoblox.com/templates/)
+This repository starts from a clone of https://github.com/wowchemy/starter-hugo-academic, where the original README.md can be found.
 
-The Hugo **Academic CV Template** empowers you to easily create your job-winning online resumé, showcase your academic publications, and create online courses or knowledge bases to grow your audience.
+## Install Hugo
 
-[![Get Started](https://img.shields.io/badge/-Get%20started-ff4655?style=for-the-badge)](https://hugoblox.com/templates/)
-[![Discord](https://img.shields.io/discord/722225264733716590?style=for-the-badge)](https://discord.com/channels/722225264733716590/742892432458252370/742895548159492138)  
-[![Twitter Follow](https://img.shields.io/twitter/follow/GetResearchDev?label=Follow%20on%20Twitter)](https://twitter.com/GetResearchDev)
+I did it on Windows 10 following https://wowchemy.com/docs/getting-started/install-hugo-extended/#windows
 
-️**Trusted by 250,000+ researchers, educators, and students.** Highly customizable via the integrated **no-code, Hugo Blox Builder**, making every site truly personalized ⭐⭐⭐⭐⭐
+1. Open the Windows Powershell 5 app, installing it if necessary.
+2. Install Scoop, the package manager for Windows, by pasting the following commands into Powershell and pressing the Enter ↵ key:
 
-Easily write technical content with plain text Markdown, LaTeX math, diagrams, RMarkdown, or Jupyter, and import publications from BibTeX.
+    ```sh
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+    iwr -useb get.scoop.sh | iex
+    ```
 
-[Check out the latest demo](https://academic-demo.netlify.app/) of what you'll get in less than 10 minutes, or [get inspired by our academics and research groups](https://hugoblox.com/creators/).
+    Press Y and enter if asked Do you want to change the execution policy?.
+3. Install Hugo and its dependencies:
 
-The integrated [**Hugo Blox Builder**](https://hugoblox.com) and CMS makes it easy to create a beautiful website for free. Edit your site in the CMS (or your favorite editor), generate it with [Hugo](https://github.com/gohugoio/hugo), and deploy with GitHub or Netlify. Customize anything on your site with widgets, light/dark themes, and language packs.
+    ```sh
+    scoop install git go hugo-extended
+    ```
 
-- 👉 [**Get Started**](https://hugoblox.com/templates/)
-- 📚 [View the **documentation**](https://docs.hugoblox.com/)
-- 💬 [Chat with the **Hugo Blox Builder community**](https://discord.gg/z8wNYzb) or [**Hugo community**](https://discourse.gohugo.io)
-- 🐦 Twitter: [@GetResearchDev](https://twitter.com/GetResearchDev) [@GeorgeCushen](https://twitter.com/GeorgeCushen) [#MadeWithHugoBlox](https://twitter.com/search?q=%23MadeWithHugoBlox&src=typed_query)
-- ⬇️ **Automatically import your publications from BibTeX** with the [Hugo Academic CLI](https://github.com/GetRD/academic-file-converter)
-- 💡 [Suggest an improvement](https://github.com/HugoBlox/hugo-blox-builder/issues)
-- ⬆️ **Updating?** View the [Update Guide](https://docs.hugoblox.com/reference/update/) and [Release Notes](https://github.com/HugoBlox/hugo-blox-builder/releases)
+## Clone starter-hugo-academic
 
-## We ask you, humbly, to support this open source movement
+Follow https://lakemper.eu/blog/getting-started-with-hugo-academic-and-github-pages/
 
-Today we ask you to defend the open source independence of the Hugo Blox Builder and themes 🐧
+Create a new (private/public) repository on GitHub, e.g., hugo-academic, without initializing README, .gitignore, and licence.
 
-We're an open source movement that depends on your support to stay online and thriving, but 99.9% of our creators don't give; they simply look the other way.
+Clone https://github.com/wowchemy/starter-hugo-academic
+```sh
+git clone https://github.com/wowchemy/starter-hugo-academic hugo-academic
+cd hugo-academic
+git remote set-url origin https://github.com/haipinglu/hugo-academic
+git push
+```
 
-### [❤️ Click here to become a Sponsor, unlocking awesome perks such as _exclusive academic templates and blocks_](https://hugoblox.com/sponsor/)
+Then rename `master` to `main` and follow the instructions on github.
 
-<!--
-<p align="center"><a href="https://hugoblox.com/templates/" target="_blank" rel="noopener"><img src="https://hugoblox.com/uploads/readmes/academic_logo_200px.png" alt="Hugo Academic Theme for Hugo Blox Builder"></a></p>
--->
+Then,
 
-## Demo image credits
+```sh
+git submodule update --init --recursive
+```
 
-- [Unsplash](https://unsplash.com)
+[*This problem is gone when last checked 17 April 2022*] If `hugo` now, several security errors will be reported. I had a hard time with this. Eventually, by Googling *"WC_POST_CSS" is not whitelisted in policy "security.funcs.getenv"*, I found the solution at https://stackoverflow.com/questions/70429317/blogdownserve-site-fails-to-produce-template-site:
 
-## Latest news
+The config file is config/_default/config.yaml in your website project. Add
+```sh
+security:
+  funcs:
+    getenv:
+      - ^HUGO_
+      - ^WC_
+```
+to it to whitelist the environment variable `WC_POST_CSS`.
 
-<!--START_SECTION:news-->
+Therefore, I followed the above to add the security config to the end of the config file. Now it works perfectly. [*No need when checked 17 April 2022*] 
 
-- [Easily make an academic CV website to get more cites and grow your audience 🚀](https://hugoblox.com/blog/easily-make-academic-website/)
-- [What&#39;s new in v5.2?](https://hugoblox.com/blog/whats-new-in-v5.2/)
-- [What&#39;s new in v5.1?](https://hugoblox.com/blog/whats-new-in-v5.1/)
-- [Version 5.0 (February 2021)](https://hugoblox.com/blog/version-5.0-february-2021/)
-- [Version 5.0 Beta 3 (February 2021)](https://hugoblox.com/blog/version-5.0-beta-3-february-2021/)
-<!--END_SECTION:news-->
+## Deploy on GitHub Pages (can be skipped)
+
+Follow https://levelup.gitconnected.com/build-a-personal-website-with-github-pages-and-hugo-6c68592204c7
+
+```sh
+hugo
+cd public
+git init -b main
+git add .
+git remote add origin https://github.com/haipinglu/haipinglu.github.io.git
+git pull origin main
+git commit -m “add Hugo content”
+git push origin main
+```
+
+## Hugo Action for auto deployment
+
+Follow https://github.com/peaceiris/actions-hugo, https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-create-ssh-deploy-key, https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-create-ssh-deploy-key,  and https://medium.com/@asishrs/automate-your-github-pages-deployment-using-hugo-and-actions-518b959a51f9
+
+<!-- Add `.gitmodules` and `https://github.com/peaceiris/actions-hugo`. -->
+
+```sh
+ssh-keygen -t ed25519 -C "h.lu@sheffield.ac.uk" -f gh-pages -N ""
+```
+
+Or the following with `empty for no passphrase`.
+
+```sh
+ssh-keygen -t ed25519 -C "h.lu@sheffield.ac.uk" -f gh-pages
+```
+
+Add the private key as a secret with name ACTIONS_DEPLOY_KEY in the Hugo Source Repository.
+Add the public key as deployment key in the GitHub pages repository
+
+## Convert old HTML to Markdown
+
+Follow https://pandoc.org/MANUAL.html
+
+```sh
+pandoc -s -o home.md home.html
+```
+
+## Manual edit
+
+With the above done, manually update and customise the files.
